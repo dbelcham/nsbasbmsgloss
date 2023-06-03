@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using NsbAsbMsgLoss;
-using NsbAsbMsgLoss.Messages;
 using NServiceBus;
 using Serilog;
 
@@ -26,22 +25,15 @@ static IHostBuilder CreateHostBuilder(string[] args)
 
     builder.UseNServiceBus(ctx =>
     {
-        var endpointConfiguration = new EndpointConfiguration("msglosstest");
+        var endpointConfiguration = new EndpointConfiguration("msglosstest_godosomething");
         var transport = endpointConfiguration.UseTransport<AzureServiceBusTransport>();
         transport.ConnectionString(ctx.Configuration.GetConnectionString("asb"));
         transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);
-
-        var routing = transport.Routing();
-        routing.RouteToEndpoint(typeof(GoDoSomething), "msglosstest_godosomething");
 
         endpointConfiguration.EnableInstallers();
         endpointConfiguration.Conventions().Add(new MessageConvention());
         endpointConfiguration.PurgeOnStartup(false);
         endpointConfiguration.UseSerialization<XmlSerializer>();
-
-        var recoverability = endpointConfiguration.Recoverability();
-        recoverability.Immediate(x => x.NumberOfRetries(0));
-        recoverability.Delayed(x => x.NumberOfRetries(0));
 
         var unitOfWorkSettings = endpointConfiguration.UnitOfWork();
         unitOfWorkSettings.WrapHandlersInATransactionScope();

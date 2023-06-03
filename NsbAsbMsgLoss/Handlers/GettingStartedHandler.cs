@@ -12,7 +12,7 @@ public class GettingStartedHandler : IHandleMessages<GettingStarted>
 
         for (var j = 0; j < 999; j++)
         {
-            await context.SendLocal(new GoDoSomething
+            await context.Send(new GoDoSomething
             {
                 Id = j,
                 Value1 = Guid.NewGuid(),
