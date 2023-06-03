@@ -1,14 +1,22 @@
-﻿using NsbAsbMsgLoss.Messages;
+﻿using Microsoft.Extensions.Logging;
+using NsbAsbMsgLoss.Messages;
 using NServiceBus;
 
 namespace NsbAsbMsgLoss.Handlers;
 
 public class GettingStartedHandler : IHandleMessages<GettingStarted>
 {
+    private readonly ILogger<GettingStartedHandler> logger;
+
+    public GettingStartedHandler(ILogger<GettingStartedHandler> logger)
+    {
+        this.logger = logger;
+    }
+
      public async Task Handle(GettingStarted message, IMessageHandlerContext context)
     //public Task Handle(GettingStarted message, IMessageHandlerContext context)
     {
-        // var tasks = new List<Task>();
+        logger.LogInformation("Got a kickoff message");
 
         for (var j = 0; j < 999; j++)
         {
@@ -38,6 +46,8 @@ public class GettingStartedHandler : IHandleMessages<GettingStarted>
                     }
                 }
             });
+
+            // var tasks = new List<Task>();
             // tasks.Add(context.SendLocal(new GoDoSomething
             // {
             //     Id = j,

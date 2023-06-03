@@ -31,7 +31,7 @@ public class ConsoleHostedService : IHostedService
                         await _messageSession.Send(new GettingStarted());
                     }
                 }
-            })
+            }, cancellationToken)
         );
 
         return Task.CompletedTask;

@@ -15,8 +15,9 @@ public class GoDoSomethingHandler : IHandleMessages<GoDoSomething>
 
     public async Task Handle(GoDoSomething message, IMessageHandlerContext context)
     {
-        // simulate work
-        Thread.Sleep(200);
         _logger.LogInformation("Processing message {id}", message.Id);
+
+        // simulate work
+        await Task.Delay(200);
     }
 }
